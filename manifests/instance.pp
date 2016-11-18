@@ -27,23 +27,23 @@ define facts::instance (
         owner   => 'root',
       }
     }
-  'yaml': {
-    file { "${facterpath}/${factname}.${format}":
-      ensure  => $ensure,
-      content => inline_template('<%= { @factname => @value}.to_yaml %>'),
-      group   => 'root',
-      mode    => '0664',
-      owner   => 'root',
+    'yaml': {
+      file { "${facterpath}/${factname}.${format}":
+        ensure  => $ensure,
+        content => inline_template('<%= { @factname => @value}.to_yaml %>'),
+        group   => 'root',
+        mode    => '0664',
+        owner   => 'root',
+      }
     }
-  }
-  'json': {
-    file { "${facterpath}/${factname}.${format}":
-      ensure  => $ensure,
-      content => inline_template('<%= { @factname => @value}.to_json %>'),
-      group   => 'root',
-      mode    => '0664',
-      owner   => 'root',
+    'json': {
+      file { "${facterpath}/${factname}.${format}":
+        ensure  => $ensure,
+        content => inline_template('<%= { @factname => @value}.to_json %>'),
+        group   => 'root',
+        mode    => '0664',
+        owner   => 'root',
+      }
     }
-  }
   }
 }
