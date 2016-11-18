@@ -1,10 +1,11 @@
 # == Defined Type facts
 #
 define facts::instance (
-  $ensure = present,
+  $ensure     = present,
   $facterpath = '/etc/facter/facts.d',
-  $factname = $name,
-  $value = undef,
+  $factname   = $name,
+  $value      = undef,
+  $format     = 'txt',
 ) {
 
   if versioncmp($::facterversion, '1.7') == -1 {
@@ -16,12 +17,33 @@ define facts::instance (
     creates => '/etc/facter/facts.d/',
     path    => '/bin',
   }
-
-  file { "${facterpath}/${factname}.txt":
-    ensure  => $ensure,
-    content => "${factname}=${value}",
-    group   => 'root',
-    mode    => '0664',
-    owner   => 'root',
+  case $format {
+    default: { 
+      file { "${facterpath}/${factname}.${format}":
+        ensure  => $ensure,
+        content => "${factname}=${value}",
+        group   => 'root',
+        mode    => '0664',
+        owner   => 'root',
+      }
+    }
+  'yaml': {
+    file { "${facterpath}/${factname}.${format}":
+      ensure  => $ensure,
+      content => inline_template('<%= { @factname => @value}.to_yaml %>'),
+      group   => 'root',
+      mode    => '0664',
+      owner   => 'root',
+    }
+  }
+  'json': {
+    file { "${facterpath}/${factname}.${format}":
+      ensure  => $ensure,
+      content => inline_template('<%= { @factname => @value}.to_json %>'),
+      group   => 'root',
+      mode    => '0664',
+      owner   => 'root',
+    }
+  }
   }
 }
