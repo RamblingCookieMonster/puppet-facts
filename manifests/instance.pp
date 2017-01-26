@@ -12,13 +12,13 @@ define facts::instance (
     fail('facts::instance requires a Facter version >= 1.7')
   }
 
-  exec { "${name} mkdir -p /etc/facter/facts.d/":
-    command => 'mkdir -p /etc/facter/facts.d/',
-    creates => '/etc/facter/facts.d/',
+  exec { "${name} mkdir -p ${facterpath}":
+    command => "mkdir -p ${facterpath}",
+    creates => $facterpath,
     path    => '/bin',
   }
   case $format {
-    default: { 
+    default: {
       file { "${facterpath}/${factname}.${format}":
         ensure  => $ensure,
         content => "${factname}=${value}",
