@@ -2,6 +2,7 @@
 #
 define facts::instance (
   $ensure     = present,
+  $command    = 'mkdir -p',
   $facterpath = '/etc/facter/facts.d',
   $factname   = $name,
   $value      = undef,
@@ -12,8 +13,8 @@ define facts::instance (
     fail('facts::instance requires a Facter version >= 1.7')
   }
 
-  exec { "${name} mkdir -p ${facterpath}":
-    command => "mkdir -p ${facterpath}",
+  exec { "${name} ${command} ${facterpath}":
+    command => "${command} ${facterpath}",
     creates => $facterpath,
     path    => '/bin',
   }
