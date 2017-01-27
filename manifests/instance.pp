@@ -2,16 +2,17 @@
 #
 define facts::instance (
   $ensure     = present,
-  $command    = 'mkdir -p',
-  $path       = '/bin',
-  $facterpath = '/etc/facter/facts.d',
+  $command    = $::facts::params::command,
+  $path       = $::facts::params::path,
+  $facterpath = $::facts::params::facterpath,
   $factname   = $name,
   $value      = undef,
   $format     = 'txt',
-  $group      = 'root',
-  $owner      = 'root',
-  $mode       = '0664'
+  $group      = $::facts::params::group,
+  $owner      = $::facts::params::owner,
+  $mode       = $::facts::params::mode
 ) {
+  include ::facts::params
 
   if versioncmp($::facterversion, '1.7') == -1 {
     fail('facts::instance requires a Facter version >= 1.7')
