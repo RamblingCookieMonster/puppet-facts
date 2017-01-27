@@ -1,4 +1,4 @@
-class params {
+class facts::params {
 
   $command    = $::osfamily ? {
     'Windows' => 'cmd /c mkdir',
